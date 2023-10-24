@@ -231,5 +231,6 @@ namespace Registro_Tickets_Garita
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxPlacas.
         }
 
+
     }
 }
