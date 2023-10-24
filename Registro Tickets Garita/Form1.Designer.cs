@@ -37,7 +37,6 @@
             this.labelProveedor = new System.Windows.Forms.Label();
             this.labelPlacas = new System.Windows.Forms.Label();
             this.btnRegistrar = new System.Windows.Forms.Button();
-            this.btnVerRegistros = new System.Windows.Forms.Button();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
@@ -128,16 +127,6 @@
             this.btnRegistrar.UseVisualStyleBackColor = true;
             this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
             // 
-            // btnVerRegistros
-            // 
-            this.btnVerRegistros.Location = new System.Drawing.Point(38, 79);
-            this.btnVerRegistros.Name = "btnVerRegistros";
-            this.btnVerRegistros.Size = new System.Drawing.Size(91, 23);
-            this.btnVerRegistros.TabIndex = 8;
-            this.btnVerRegistros.Text = "Ver Registros";
-            this.btnVerRegistros.UseVisualStyleBackColor = true;
-            this.btnVerRegistros.Click += new System.EventHandler(this.btnVerRegistros_Click);
-            // 
             // textBoxNombre
             // 
             this.textBoxNombre.Location = new System.Drawing.Point(167, 167);
@@ -188,7 +177,6 @@
             this.Controls.Add(this.textBoxLicencia);
             this.Controls.Add(this.textBoxApellido);
             this.Controls.Add(this.textBoxNombre);
-            this.Controls.Add(this.btnVerRegistros);
             this.Controls.Add(this.btnRegistrar);
             this.Controls.Add(this.labelPlacas);
             this.Controls.Add(this.labelProveedor);
@@ -215,7 +203,6 @@
         private System.Windows.Forms.Label labelProveedor;
         private System.Windows.Forms.Label labelPlacas;
         private System.Windows.Forms.Button btnRegistrar;
-        private System.Windows.Forms.Button btnVerRegistros;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.TextBox textBoxLicencia;

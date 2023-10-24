@@ -1,14 +1,9 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using PdfSharp.Drawing;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
-using PdfSharp.Pdf;
-using System.Drawing;
-using static NPOI.HSSF.Util.HSSFColor;
-using Microsoft.Win32;
 
 namespace Registro_Tickets_Garita
 {
@@ -42,10 +37,12 @@ namespace Registro_Tickets_Garita
             }
         }
 
+        private List<Registro> registros = new List<Registro>();
 
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
+
 
             // Incrementar el ID
             int id = idIncremental++;
@@ -53,8 +50,6 @@ namespace Registro_Tickets_Garita
 
             // Capturar la fecha y hora actual
             DateTime fechaYHora = DateTime.Now;
-
-
 
 
             // Crear una línea de registro
@@ -75,7 +70,6 @@ namespace Registro_Tickets_Garita
             // Imprimir el ticket
             ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
 
-
             // Mostrar un mensaje de éxito o hacer otras acciones necesarias
             MessageBox.Show("Registro completado.Turno: " + numeroTurno);
 
@@ -85,6 +79,7 @@ namespace Registro_Tickets_Garita
 
             // Reiniciar los campos de entrada si es necesario
             LimpiarCampos();
+
         }
 
         private void CargarUltimoID()
@@ -102,7 +97,6 @@ namespace Registro_Tickets_Garita
             string idFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ultimo_id.txt");
             File.WriteAllText(idFilePath, idIncremental.ToString());
         }
-
 
 
         private void LimpiarCampos()
@@ -192,14 +186,14 @@ namespace Registro_Tickets_Garita
 
                     // Agradecimiento y número de ID
                     string agradecimiento = "¡Gracias por visitarnos!";
-                    
+
 
                     y += 40;
-                   
-                    e.Graphics.DrawString(agradecimiento, titleFont, textBrush, x, y);
-                   
 
-                   
+                    e.Graphics.DrawString(agradecimiento, titleFont, textBrush, x, y);
+
+
+
                 }
             };
 
@@ -236,15 +230,6 @@ namespace Registro_Tickets_Garita
         {
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxPlacas.
         }
-
-        private void btnVerRegistros_Click(object sender, EventArgs e)
-        {
-            FormVerRegistros form = new FormVerRegistros();
-            form.Show();
-        }
-
-
-
 
     }
 }
