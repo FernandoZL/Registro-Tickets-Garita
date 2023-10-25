@@ -203,7 +203,10 @@ namespace Registro_Tickets_Garita
 
             // Imprimir el documento
             printDocument.Print();
+            // Después de imprimir el ticket, enviar un correo electrónico
+
         }
+
 
 
 
@@ -231,6 +234,9 @@ namespace Registro_Tickets_Garita
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxPlacas.
         }
 
+        private void FormRegistro_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

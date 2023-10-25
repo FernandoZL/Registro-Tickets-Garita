@@ -42,7 +42,7 @@
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
             this.textBoxProveedor = new System.Windows.Forms.TextBox();
             this.textBoxPlacas = new System.Windows.Forms.TextBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +51,7 @@
             this.pictureLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictureLogo.Image")));
             this.pictureLogo.Location = new System.Drawing.Point(195, 12);
             this.pictureLogo.Name = "pictureLogo";
-            this.pictureLogo.Size = new System.Drawing.Size(172, 74);
+            this.pictureLogo.Size = new System.Drawing.Size(172, 75);
             this.pictureLogo.TabIndex = 0;
             this.pictureLogo.TabStop = false;
             // 
@@ -63,7 +63,7 @@
             this.labelTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitulo.Location = new System.Drawing.Point(12, 12);
             this.labelTitulo.Name = "labelTitulo";
-            this.labelTitulo.Size = new System.Drawing.Size(177, 74);
+            this.labelTitulo.Size = new System.Drawing.Size(177, 75);
             this.labelTitulo.TabIndex = 1;
             this.labelTitulo.Text = "Registro de unidades GARITA";
             // 
@@ -130,7 +130,7 @@
             // 
             // textBoxNombre
             // 
-            this.textBoxNombre.Location = new System.Drawing.Point(167, 167);
+            this.textBoxNombre.Location = new System.Drawing.Point(166, 167);
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(169, 20);
             this.textBoxNombre.TabIndex = 9;
@@ -138,7 +138,7 @@
             // 
             // textBoxApellido
             // 
-            this.textBoxApellido.Location = new System.Drawing.Point(167, 204);
+            this.textBoxApellido.Location = new System.Drawing.Point(166, 205);
             this.textBoxApellido.Name = "textBoxApellido";
             this.textBoxApellido.Size = new System.Drawing.Size(169, 20);
             this.textBoxApellido.TabIndex = 10;
@@ -146,7 +146,7 @@
             // 
             // textBoxLicencia
             // 
-            this.textBoxLicencia.Location = new System.Drawing.Point(167, 243);
+            this.textBoxLicencia.Location = new System.Drawing.Point(166, 244);
             this.textBoxLicencia.Name = "textBoxLicencia";
             this.textBoxLicencia.Size = new System.Drawing.Size(169, 20);
             this.textBoxLicencia.TabIndex = 11;
@@ -154,7 +154,7 @@
             // 
             // textBoxProveedor
             // 
-            this.textBoxProveedor.Location = new System.Drawing.Point(167, 287);
+            this.textBoxProveedor.Location = new System.Drawing.Point(166, 287);
             this.textBoxProveedor.Name = "textBoxProveedor";
             this.textBoxProveedor.Size = new System.Drawing.Size(169, 20);
             this.textBoxProveedor.TabIndex = 12;
@@ -162,29 +162,29 @@
             // 
             // textBoxPlacas
             // 
-            this.textBoxPlacas.Location = new System.Drawing.Point(167, 331);
+            this.textBoxPlacas.Location = new System.Drawing.Point(166, 331);
             this.textBoxPlacas.Name = "textBoxPlacas";
             this.textBoxPlacas.Size = new System.Drawing.Size(169, 20);
             this.textBoxPlacas.TabIndex = 13;
             this.textBoxPlacas.TextChanged += new System.EventHandler(this.textBoxPlacas_TextChanged);
             // 
-            // linkLabel1
+            // label1
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(299, 491);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(63, 7);
-            this.linkLabel1.TabIndex = 14;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "©Fernándo Zuñiga";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.LightSteelBlue;
+            this.label1.Location = new System.Drawing.Point(299, 489);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 9);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "©Fernándo Zuñiga";
             // 
             // FormRegistro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 507);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxPlacas);
             this.Controls.Add(this.textBoxProveedor);
             this.Controls.Add(this.textBoxLicencia);
@@ -198,8 +198,10 @@
             this.Controls.Add(this.labelNombre);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.pictureLogo);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormRegistro";
             this.Text = "Registrar Unidades";
+            this.Load += new System.EventHandler(this.FormRegistro_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -221,7 +223,7 @@
         private System.Windows.Forms.TextBox textBoxLicencia;
         private System.Windows.Forms.TextBox textBoxProveedor;
         private System.Windows.Forms.TextBox textBoxPlacas;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
