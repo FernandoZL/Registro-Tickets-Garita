@@ -252,15 +252,27 @@ namespace Registro_Tickets_Garita
 
             var mensaje = new AE.Net.Mail.MailMessage
             {
-                Subject = "Nuevo registro: " + $" {proveedor} - " + $" Ingreso: {fechaYHora}\n ",
-                Body = $"Se ha registrado un nuevo turno con ID {id}. Detalles:\n\n" +
-                    $"Turno: {turno}\n" +
-                    $"Fecha y Hora: {fechaYHora}\n" +
-                    $"Nombre: {nombre}\n" +
-                    $"Apellido: {apellido}\n" +
-                    $"No. Licencia: {licencia}\n" +
-                    $"Proveedor: {proveedor}"
+                Subject = $"Nuevo registro: {proveedor} - Ingreso: {fechaYHora}",
+                Body = $"Hola Equipo de Supply gusto en saludarles,\n\n" +
+        $"Se ha registrado un nuevo turno con ID {id}. Te muestro los detalles:\n\n" +
+        $"Turno: {turno}\n" +
+        $"Fecha y Hora: {fechaYHora}\n" +
+        $"Nombre: {nombre}\n" +
+        $"Apellido: {apellido}\n" +
+        $"No. Licencia: {licencia}\n" +
+        $"Proveedor: {proveedor}\n\n" +
+        "Saludos cordiales.\n\n" +
+        "Mejora Continua Procesos RPA | Supply Chain\n\n" +
+        "D: 12 av 1-93 zona 2 de Mixco Colonia Alvarado, Guatemala\n" +
+        "W: www.foodservice.com.gt\n\n" +
+        "Nota: Este es un correo automatico, por favor no respondas a esta direccion de correo electronico.\n\n"
             };
+
+
+
+
+
+
 
             var mimeMessage = new MimeKit.MimeMessage();
             mimeMessage.From.Add(new MimeKit.MailboxAddress("GARITA", "fernando.zuniga@foodservice.com.gt"));
