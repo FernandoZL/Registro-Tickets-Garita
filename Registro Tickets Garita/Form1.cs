@@ -22,7 +22,6 @@ namespace Registro_Tickets_Garita
         private DateTime ultimoInicioDelDia = DateTime.Now.Date; // Variable para el último inicio del día
         private string registrosFilePath; // Ruta del archivo de registros
 
-
         public FormRegistro()
         {
             InitializeComponent();
@@ -47,7 +46,6 @@ namespace Registro_Tickets_Garita
 
         private List<Registro> registros = new List<Registro>();
 
-
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
@@ -55,10 +53,8 @@ namespace Registro_Tickets_Garita
             // Incrementar el ID
             int id = idIncremental++;
 
-
             // Capturar la fecha y hora actual
             DateTime fechaYHora = DateTime.Now;
-
 
             // Crear una línea de registro
             string registro = $"{id}, {numeroTurno}, {fechaYHora}, {textBoxNombre.Text}, {textBoxApellido.Text}, {textBoxLicencia.Text}, {textBoxProveedor.Text}";
@@ -81,14 +77,11 @@ namespace Registro_Tickets_Garita
             // Enviar un correo electrónico con los datos
             EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
 
-
-
             // Mostrar un mensaje de éxito o hacer otras acciones necesarias
             MessageBox.Show("Registro completado.Turno: " + numeroTurno);
 
             // Incrementar el número de turno
             numeroTurno++;
-
 
             // Reiniciar los campos de entrada si es necesario
             LimpiarCampos();
@@ -111,7 +104,6 @@ namespace Registro_Tickets_Garita
             File.WriteAllText(idFilePath, idIncremental.ToString());
         }
 
-
         private void LimpiarCampos()
         {
             // Lógica para limpiar los campos de entrada después de registrar
@@ -121,7 +113,6 @@ namespace Registro_Tickets_Garita
             textBoxProveedor.Clear();
             textBoxPlacas.Clear();
         }
-
 
         private void ImprimirTicket(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor)
         {
@@ -220,10 +211,6 @@ namespace Registro_Tickets_Garita
 
         }
 
-
-
-
-
         private void EnviarCorreoElectronico(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor)
         {
             UserCredential credential;
@@ -254,7 +241,7 @@ namespace Registro_Tickets_Garita
             {
                 Subject = $"Nuevo registro: {proveedor} - Ingreso: {fechaYHora}",
                 Body = $"Hola Equipo de Supply gusto en saludarles,\n\n" +
-        $"Se ha registrado un nuevo turno con ID {id}. Te muestro los detalles:\n\n" +
+        $"Se ha registrado un nuevo turno con ID {id}. Comparto los detalles:  \n\n" +
         $"Turno: {turno}\n" +
         $"Fecha y Hora: {fechaYHora}\n" +
         $"Nombre: {nombre}\n" +
@@ -267,12 +254,6 @@ namespace Registro_Tickets_Garita
         "W: www.foodservice.com.gt\n\n" +
         "Nota: Este es un correo automatico, por favor no respondas a esta direccion de correo electronico.\n\n"
             };
-
-
-
-
-
-
 
             var mimeMessage = new MimeKit.MimeMessage();
             mimeMessage.From.Add(new MimeKit.MailboxAddress("GARITA", "fernando.zuniga@foodservice.com.gt"));
@@ -330,11 +311,6 @@ namespace Registro_Tickets_Garita
                 .TrimEnd('=');
         }
 
-
-
-
-
-
         private void textBoxNombre_TextChanged(object sender, EventArgs e)
         {
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxNombre.
@@ -358,10 +334,6 @@ namespace Registro_Tickets_Garita
         {
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxPlacas.
         }
-
-        private void FormRegistro_Load(object sender, EventArgs e)
-        {
-
-        }
+               
     }
 }
