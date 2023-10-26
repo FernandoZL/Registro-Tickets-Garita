@@ -1,9 +1,17 @@
-﻿using System;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using GmailMessage = Google.Apis.Gmail.v1.Data.Message;
+
 
 namespace Registro_Tickets_Garita
 {
@@ -69,6 +77,11 @@ namespace Registro_Tickets_Garita
 
             // Imprimir el ticket
             ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
+
+            // Enviar un correo electrónico con los datos
+            EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
+
+
 
             // Mostrar un mensaje de éxito o hacer otras acciones necesarias
             MessageBox.Show("Registro completado.Turno: " + numeroTurno);
@@ -206,6 +219,106 @@ namespace Registro_Tickets_Garita
             // Después de imprimir el ticket, enviar un correo electrónico
 
         }
+
+
+
+
+
+        private void EnviarCorreoElectronico(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor)
+        {
+            UserCredential credential;
+
+            string credencialesJsonPath = "credentials.json"; // Reemplaza con la ruta a tu archivo JSON de credenciales
+
+            using (var stream = new FileStream(credencialesJsonPath, FileMode.Open, FileAccess.Read))
+            {
+                string[] scopes = { GmailService.Scope.GmailSend };
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets
+,
+                    scopes,
+                    "fernando.zuniga@foodservice.com.gt", // Cambia "usuario@gmail.com" por tu dirección de correo
+                    CancellationToken.None,
+                    new FileDataStore(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens"))
+                ).Result;
+            }
+
+            var gmailService = new GmailService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "Reg_Entrada"
+            });
+
+            var mensaje = new AE.Net.Mail.MailMessage
+            {
+                Subject = "Nuevo registro: " + $" {proveedor} - " + $" Ingreso: {fechaYHora}\n ",
+                Body = $"Se ha registrado un nuevo turno con ID {id}. Detalles:\n\n" +
+                    $"Turno: {turno}\n" +
+                    $"Fecha y Hora: {fechaYHora}\n" +
+                    $"Nombre: {nombre}\n" +
+                    $"Apellido: {apellido}\n" +
+                    $"No. Licencia: {licencia}\n" +
+                    $"Proveedor: {proveedor}"
+            };
+
+            var mimeMessage = new MimeKit.MimeMessage();
+            mimeMessage.From.Add(new MimeKit.MailboxAddress("GARITA", "fernando.zuniga@foodservice.com.gt"));
+
+            // Cadena de destinatarios separados por comas
+            string destinatarios = "fernando.zuniga@foodservice.com.gt,mejoracontinua.rpa@foodservice.com.gt";
+
+            // Divide la cadena de destinatarios por comas
+            string[] direcciones = destinatarios.Split(',');
+
+            // Crea una lista para almacenar las direcciones de correo electrónico
+            List<MimeKit.MailboxAddress> listaDestinatarios = new List<MimeKit.MailboxAddress>();
+
+            // Recorre las direcciones y crea objetos MimeKit.MailboxAddress
+            foreach (string direccion in direcciones)
+            {
+                listaDestinatarios.Add(new MimeKit.MailboxAddress(direccion.Trim(), direccion.Trim()));
+            }
+
+            // Agrega la lista de destinatarios al campo "Para" del mensaje
+            mimeMessage.To.AddRange(listaDestinatarios);
+
+            mimeMessage.Subject = mensaje.Subject;
+            mimeMessage.Body = new MimeKit.TextPart("plain")
+            {
+                Text = mensaje.Body
+            };
+
+
+            var gmailMessage = new GmailMessage
+            {
+                Raw = Base64UrlEncode(mimeMessage.ToString())
+            };
+
+
+            var request = gmailService.Users.Messages.Send(gmailMessage, "me"); // "me" se refiere al usuario autenticado
+
+            try
+            {
+                request.Execute();
+                Console.WriteLine("Correo electrónico enviado con éxito.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al enviar el correo electrónico: " + ex.Message);
+            }
+        }
+
+        private static string Base64UrlEncode(string input)
+        {
+            var inputBytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(inputBytes)
+                .Replace('+', '-')
+                .Replace('/', '_')
+                .TrimEnd('=');
+        }
+
+
 
 
 
