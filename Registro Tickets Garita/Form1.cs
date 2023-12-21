@@ -2,6 +2,7 @@
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -128,9 +129,18 @@ namespace Registro_Tickets_Garita
                     int x = 10; // Margen izquierdo
                     int y = 10; // Margen superior
 
+                   
+                    // Obtener la ruta de la imagen en la carpeta Debug
+                    string rutaImagen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SysAmall.jpg"); // Reemplaza con el nombre y extensión de tu imagen
+                    Image imagen = Image.FromFile(rutaImagen);
+
+                    // Agregar la imagen
+                    e.Graphics.DrawImage(imagen, x, y, 172, 74); // Ajusta la posición y el tamaño de la imagen
+                    y += 50; // Ajusta el espacio después de la imagen
+
                     // Título "Bienvenido a Suministros y Alimentos"
-                    string tituloBienvenido = "Suministros y Alimentos";
-                    e.Graphics.DrawString(tituloBienvenido, titleFont, textBrush, x, y);
+                    string tituloBienvenido = "Descarga de proveedores!";
+                    e.Graphics.DrawString(tituloBienvenido, titleFont, textBrush, x +110, y);
                     y += 30;
 
                     // Título "Turno" en negrita
