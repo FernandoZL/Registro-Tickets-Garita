@@ -129,19 +129,27 @@ namespace Registro_Tickets_Garita
                     int x = 10; // Margen izquierdo
                     int y = 10; // Margen superior
 
-                   
+
                     // Obtener la ruta de la imagen en la carpeta Debug
                     string rutaImagen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SysAmall.jpg"); // Reemplaza con el nombre y extensión de tu imagen
+
+                    // Agregar la imagen centrada
                     Image imagen = Image.FromFile(rutaImagen);
+                    int imagenAncho = 172; // Ancho deseado de la imagen
+                    int imagenAltura = 74; // Altura deseada de la imagen
+                    int centrarX = (e.PageBounds.Width - imagenAncho) / 2; // Calcular la posición X para centrar la imagen
+                    e.Graphics.DrawImage(imagen, centrarX, y, imagenAncho, imagenAltura); // Ajusta la posición y el tamaño de la imagen centrada
+                    y += imagenAltura + 20; // Ajusta el espacio después de la imagen
 
-                    // Agregar la imagen
-                    e.Graphics.DrawImage(imagen, x, y, 172, 74); // Ajusta la posición y el tamaño de la imagen
-                    y += 50; // Ajusta el espacio después de la imagen
+                    // Título "Descarga de proveedores!" centrado
+                    string tituloBienvenido = "" +
+                    "¡Descarga de proveedores!";
+                    SizeF tituloSize = e.Graphics.MeasureString(tituloBienvenido, titleFont);
+                    int centrarXTitulo = (e.PageBounds.Width - (int)tituloSize.Width) / 2; // Calcular la posición X para centrar el título
+                    e.Graphics.DrawString(tituloBienvenido, titleFont, textBrush, centrarXTitulo, y);
+                    y += (int)tituloSize.Height + 30; // Ajusta el espacio después del título
 
-                    // Título "Bienvenido a Suministros y Alimentos"
-                    string tituloBienvenido = "Descarga de proveedores!";
-                    e.Graphics.DrawString(tituloBienvenido, titleFont, textBrush, x +110, y);
-                    y += 30;
+
 
                     // Título "Turno" en negrita
                     string tituloTurno = "Turno";
@@ -193,18 +201,24 @@ namespace Registro_Tickets_Garita
                     string numeroID = $" {id}";
                     e.Graphics.DrawString(titulonumeroID, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(numeroID, normalFont, textBrush, x, y + titleFont.GetHeight());
-                    y += 10;
+                    y += 50;
 
                     // Línea horizontal (ajustada al ancho del papel)
                     e.Graphics.DrawLine(linePen, x, y + 40, x + lineaLongitud, y + 40);
 
-                    // Agradecimiento y número de ID
+                   // Agradecimiento centrado
                     string agradecimiento = "¡Gracias por visitarnos!";
+                   SizeF agradecimientoSize = e.Graphics.MeasureString(agradecimiento, titleFont);
+                   int centrarXAgradecimiento = (e.PageBounds.Width - (int)agradecimientoSize.Width) / 2; // Calcular la posición X para centrar el agradecimiento
+                   e.Graphics.DrawString(agradecimiento, titleFont, textBrush, centrarXAgradecimiento, y);
+                    y += (int)agradecimientoSize.Height + 40; // Ajusta el espacio después del agradecimiento
 
-
-                    y += 40;
-
-                    e.Graphics.DrawString(agradecimiento, titleFont, textBrush, x, y);
+                    // Despedida centrada
+                    string despedida = "¡Hasta luego!";
+                    SizeF despedidaSize = e.Graphics.MeasureString(despedida, titleFont);
+                    int centrarXDespedida = (e.PageBounds.Width - (int)despedidaSize.Width) / 2; // Calcular la posición X para centrar la despedida
+                    e.Graphics.DrawString(despedida, titleFont, textBrush, centrarXDespedida, y);
+                    y += (int)despedidaSize.Height + 20; // Ajusta el espacio después de la despedida
 
 
 
