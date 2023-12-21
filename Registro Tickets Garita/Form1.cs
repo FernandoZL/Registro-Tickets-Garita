@@ -2,7 +2,6 @@
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -212,11 +211,11 @@ namespace Registro_Tickets_Garita
                     // Línea horizontal (ajustada al ancho del papel)
                     e.Graphics.DrawLine(linePen, x, y + 40, x + lineaLongitud, y + 40);
 
-                   // Agradecimiento centrado
+                    // Agradecimiento centrado
                     string agradecimiento = "¡Gracias por visitarnos!";
-                   SizeF agradecimientoSize = e.Graphics.MeasureString(agradecimiento, titleFont);
-                   int centrarXAgradecimiento = (e.PageBounds.Width - (int)agradecimientoSize.Width) / 2; // Calcular la posición X para centrar el agradecimiento
-                   e.Graphics.DrawString(agradecimiento, titleFont, textBrush, centrarXAgradecimiento, y);
+                    SizeF agradecimientoSize = e.Graphics.MeasureString(agradecimiento, titleFont);
+                    int centrarXAgradecimiento = (e.PageBounds.Width - (int)agradecimientoSize.Width) / 2; // Calcular la posición X para centrar el agradecimiento
+                    e.Graphics.DrawString(agradecimiento, titleFont, textBrush, centrarXAgradecimiento, y);
                     y += (int)agradecimientoSize.Height + 40; // Ajusta el espacio después del agradecimiento
 
                     // Despedida centrada
@@ -287,10 +286,10 @@ namespace Registro_Tickets_Garita
             };
 
             var mimeMessage = new MimeKit.MimeMessage();
-            mimeMessage.From.Add(new MimeKit.MailboxAddress("GARITA", "fernando.zuniga@foodservice.com.gt"));
+            mimeMessage.From.Add(new MimeKit.MailboxAddress("NUEVO INGRESO - GARITA", "fernando.zuniga@foodservice.com.gt"));
 
             // Cadena de destinatarios separados por comas
-            string destinatarios = "fernando.zuniga@foodservice.com.gt,mejoracontinua.rpa@foodservice.com.gt";
+            string destinatarios = "mejoracontinua.rpa@foodservice.com.gt,procesos@foodservice.com.gt,bodegacd@foodservice.com.gt,brayan.morales@foodservice.com.gt,dania.reyes@foodservice.com.gt,kely.felipe@foodservice.com.gt";
 
             // Divide la cadena de destinatarios por comas
             string[] direcciones = destinatarios.Split(',');
@@ -365,6 +364,10 @@ namespace Registro_Tickets_Garita
         {
             // Código que deseas ejecutar cuando cambia el texto en el control textBoxPlacas.
         }
-               
+
+        private void FormRegistro_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

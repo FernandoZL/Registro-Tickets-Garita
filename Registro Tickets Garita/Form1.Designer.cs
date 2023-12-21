@@ -201,6 +201,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormRegistro";
             this.Text = "Registrar Unidades";
+            this.Load += new System.EventHandler(this.FormRegistro_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
