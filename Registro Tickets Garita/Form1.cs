@@ -58,12 +58,12 @@ namespace Registro_Tickets_Garita
             DateTime fechaYHora = DateTime.Now;
 
             // Crear una línea de registro
-            string registro = $"{id}, {numeroTurno}, {fechaYHora}, {textBoxNombre.Text}, {textBoxApellido.Text}, {textBoxLicencia.Text}, {textBoxProveedor.Text}";
+            string registro = $"{id}, {numeroTurno}, {fechaYHora}, {textBoxNombre.Text}, {textBoxApellido.Text}, {textBoxLicencia.Text}, {textBoxProveedor.Text},{textBoxPlacas.Text}";
 
             // Agregar un título si el archivo no existe
             if (!File.Exists(registrosFilePath))
             {
-                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Nombre, Apellido, No. Licencia, Proveedor" + Environment.NewLine);
+                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Nombre, Apellido, No. Licencia, Proveedor, Placas" + Environment.NewLine);
             }
 
             // Escribir la línea en el archivo de registros
@@ -73,10 +73,10 @@ namespace Registro_Tickets_Garita
             GuardarUltimoID();
 
             // Imprimir el ticket
-            ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
+            ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
 
             // Enviar un correo electrónico con los datos
-            EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text);
+            EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
 
             // Mostrar un mensaje de éxito o hacer otras acciones necesarias
             MessageBox.Show("Registro completado.Turno: " + numeroTurno);
@@ -115,7 +115,7 @@ namespace Registro_Tickets_Garita
             textBoxPlacas.Clear();
         }
 
-        private void ImprimirTicket(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor)
+        private void ImprimirTicket(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
         {
             // Crear un documento para imprimir
             PrintDocument printDocument = new PrintDocument();
@@ -196,6 +196,12 @@ namespace Registro_Tickets_Garita
                     e.Graphics.DrawString(valorProveedor, normalFont, textBrush, x, y + titleFont.GetHeight());
                     y += 40;
 
+                    string tituloPlacas = "Placas:";
+                    string valorPlacas = placas;
+                    e.Graphics.DrawString(tituloPlacas, titleFont, textBrush, x, y);
+                    e.Graphics.DrawString(valorPlacas, normalFont, textBrush, x, y + titleFont.GetHeight());
+                    y += 40;
+
                     // string numeroID = $"Registro: {id}";
                     string titulonumeroID = "Registro:";
                     string numeroID = $" {id}";
@@ -235,7 +241,7 @@ namespace Registro_Tickets_Garita
 
         }
 
-        private void EnviarCorreoElectronico(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor)
+        private void EnviarCorreoElectronico(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
         {
             UserCredential credential;
 
@@ -272,6 +278,7 @@ namespace Registro_Tickets_Garita
         $"Apellido: {apellido}\n" +
         $"No. Licencia: {licencia}\n" +
         $"Proveedor: {proveedor}\n\n" +
+        $"Placas: {placas}\n\n" +
         "Saludos cordiales.\n\n" +
         "Mejora Continua Procesos RPA | Supply Chain\n\n" +
         "D: 12 av 1-93 zona 2 de Mixco Colonia Alvarado, Guatemala\n" +
