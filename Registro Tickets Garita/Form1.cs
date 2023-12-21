@@ -276,7 +276,7 @@ namespace Registro_Tickets_Garita
         $"Nombre: {nombre}\n" +
         $"Apellido: {apellido}\n" +
         $"No. Licencia: {licencia}\n" +
-        $"Proveedor: {proveedor}\n\n" +
+        $"Proveedor: {proveedor}\n" +
         $"Placas: {placas}\n\n" +
         "Saludos cordiales.\n\n" +
         "Mejora Continua Procesos RPA | Supply Chain\n\n" +
