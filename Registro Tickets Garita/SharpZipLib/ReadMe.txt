@@ -1,16 +1,3 @@
-CATEGORIZAR CODIGOS 
 
-MCD 100 
-CONG. REF. SEC.
-
-DE LOS CODIGOS ACTIVOS
-
-
-CATEGORIZAR Y AGREGAR CAPACIDAD CUBICA
-
-
-
-1-CODIGOS ACTIVOS
-2-ALMACEN POR CODIGO ( CO,RE,SE )
-3-CUBICAJE POR CODIGO
-4-CUBICAJE POR ALMACEN
+This code is an excerpt from the SharpZipLib. The code is unmodified except that all classes
+are made internal and moved to the namespace PdfSharp.SharpZipLib.

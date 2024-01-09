@@ -38,7 +38,7 @@
             this.labelPlacas = new System.Windows.Forms.Label();
             this.btnRegistrar = new System.Windows.Forms.Button();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
-            this.textBoxAyudante = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
             this.textBoxProveedor = new System.Windows.Forms.TextBox();
             this.textBoxPlacas = new System.Windows.Forms.TextBox();
@@ -49,7 +49,7 @@
             // pictureLogo
             // 
             this.pictureLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictureLogo.Image")));
-            this.pictureLogo.Location = new System.Drawing.Point(226, 12);
+            this.pictureLogo.Location = new System.Drawing.Point(195, 12);
             this.pictureLogo.Name = "pictureLogo";
             this.pictureLogo.Size = new System.Drawing.Size(172, 75);
             this.pictureLogo.TabIndex = 0;
@@ -63,9 +63,9 @@
             this.labelTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitulo.Location = new System.Drawing.Point(12, 12);
             this.labelTitulo.Name = "labelTitulo";
-            this.labelTitulo.Size = new System.Drawing.Size(214, 129);
+            this.labelTitulo.Size = new System.Drawing.Size(177, 75);
             this.labelTitulo.TabIndex = 1;
-            this.labelTitulo.Text = "Registro de unidades en Garita - Entrada";
+            this.labelTitulo.Text = "Registro de unidades GARITA";
             // 
             // labelNombre
             // 
@@ -73,9 +73,9 @@
             this.labelNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelNombre.Location = new System.Drawing.Point(21, 161);
             this.labelNombre.Name = "labelNombre";
-            this.labelNombre.Size = new System.Drawing.Size(73, 26);
+            this.labelNombre.Size = new System.Drawing.Size(96, 26);
             this.labelNombre.TabIndex = 2;
-            this.labelNombre.Text = "Piloto:";
+            this.labelNombre.Text = "Nombre:";
             // 
             // labelApellido
             // 
@@ -83,9 +83,9 @@
             this.labelApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelApellido.Location = new System.Drawing.Point(21, 198);
             this.labelApellido.Name = "labelApellido";
-            this.labelApellido.Size = new System.Drawing.Size(125, 26);
+            this.labelApellido.Size = new System.Drawing.Size(96, 26);
             this.labelApellido.TabIndex = 3;
-            this.labelApellido.Text = "Ayudante\'s:";
+            this.labelApellido.Text = "Apellido:";
             // 
             // labelLicencia
             // 
@@ -93,9 +93,9 @@
             this.labelLicencia.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelLicencia.Location = new System.Drawing.Point(21, 237);
             this.labelLicencia.Name = "labelLicencia";
-            this.labelLicencia.Size = new System.Drawing.Size(199, 26);
+            this.labelLicencia.Size = new System.Drawing.Size(138, 26);
             this.labelLicencia.TabIndex = 4;
-            this.labelLicencia.Text = "No. Licencia Piloto:";
+            this.labelLicencia.Text = "No. Licencia:";
             // 
             // labelProveedor
             // 
@@ -120,9 +120,9 @@
             // btnRegistrar
             // 
             this.btnRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRegistrar.Location = new System.Drawing.Point(244, 427);
+            this.btnRegistrar.Location = new System.Drawing.Point(129, 415);
             this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(155, 40);
+            this.btnRegistrar.Size = new System.Drawing.Size(116, 40);
             this.btnRegistrar.TabIndex = 7;
             this.btnRegistrar.Text = "Registrar ✔";
             this.btnRegistrar.UseVisualStyleBackColor = true;
@@ -130,23 +130,23 @@
             // 
             // textBoxNombre
             // 
-            this.textBoxNombre.Location = new System.Drawing.Point(223, 167);
+            this.textBoxNombre.Location = new System.Drawing.Point(166, 167);
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(169, 20);
             this.textBoxNombre.TabIndex = 9;
             this.textBoxNombre.TextChanged += new System.EventHandler(this.textBoxNombre_TextChanged);
             // 
-            // textBoxAyudante
+            // textBoxApellido
             // 
-            this.textBoxAyudante.Location = new System.Drawing.Point(223, 205);
-            this.textBoxAyudante.Name = "textBoxAyudante";
-            this.textBoxAyudante.Size = new System.Drawing.Size(169, 20);
-            this.textBoxAyudante.TabIndex = 10;
-            this.textBoxAyudante.TextChanged += new System.EventHandler(this.textBoxApellido_TextChanged);
+            this.textBoxApellido.Location = new System.Drawing.Point(166, 205);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(169, 20);
+            this.textBoxApellido.TabIndex = 10;
+            this.textBoxApellido.TextChanged += new System.EventHandler(this.textBoxApellido_TextChanged);
             // 
             // textBoxLicencia
             // 
-            this.textBoxLicencia.Location = new System.Drawing.Point(223, 244);
+            this.textBoxLicencia.Location = new System.Drawing.Point(166, 244);
             this.textBoxLicencia.Name = "textBoxLicencia";
             this.textBoxLicencia.Size = new System.Drawing.Size(169, 20);
             this.textBoxLicencia.TabIndex = 11;
@@ -154,7 +154,7 @@
             // 
             // textBoxProveedor
             // 
-            this.textBoxProveedor.Location = new System.Drawing.Point(223, 287);
+            this.textBoxProveedor.Location = new System.Drawing.Point(166, 287);
             this.textBoxProveedor.Name = "textBoxProveedor";
             this.textBoxProveedor.Size = new System.Drawing.Size(169, 20);
             this.textBoxProveedor.TabIndex = 12;
@@ -162,7 +162,7 @@
             // 
             // textBoxPlacas
             // 
-            this.textBoxPlacas.Location = new System.Drawing.Point(223, 331);
+            this.textBoxPlacas.Location = new System.Drawing.Point(166, 331);
             this.textBoxPlacas.Name = "textBoxPlacas";
             this.textBoxPlacas.Size = new System.Drawing.Size(169, 20);
             this.textBoxPlacas.TabIndex = 13;
@@ -173,7 +173,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.label1.Location = new System.Drawing.Point(253, 489);
+            this.label1.Location = new System.Drawing.Point(216, 489);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(151, 9);
             this.label1.TabIndex = 15;
@@ -183,12 +183,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 504);
+            this.ClientSize = new System.Drawing.Size(374, 507);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxPlacas);
             this.Controls.Add(this.textBoxProveedor);
             this.Controls.Add(this.textBoxLicencia);
-            this.Controls.Add(this.textBoxAyudante);
+            this.Controls.Add(this.textBoxApellido);
             this.Controls.Add(this.textBoxNombre);
             this.Controls.Add(this.btnRegistrar);
             this.Controls.Add(this.labelPlacas);
@@ -219,7 +219,7 @@
         private System.Windows.Forms.Label labelPlacas;
         private System.Windows.Forms.Button btnRegistrar;
         private System.Windows.Forms.TextBox textBoxNombre;
-        private System.Windows.Forms.TextBox textBoxAyudante;
+        private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.TextBox textBoxLicencia;
         private System.Windows.Forms.TextBox textBoxProveedor;
         private System.Windows.Forms.TextBox textBoxPlacas;

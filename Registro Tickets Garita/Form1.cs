@@ -1,8 +1,6 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
-using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
@@ -13,7 +11,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using GmailMessage = Google.Apis.Gmail.v1.Data.Message;
-
 
 
 namespace Registro_Tickets_Garita
@@ -60,18 +57,12 @@ namespace Registro_Tickets_Garita
             DateTime fechaYHora = DateTime.Now;
 
             // Crear una línea de registro
-            string registro = $"{id}, {numeroTurno}, {fechaYHora}, {textBoxNombre.Text}, {textBoxAyudante.Text}, {textBoxLicencia.Text}, {textBoxProveedor.Text},{textBoxPlacas.Text}";
-
-            // Escribir en Google Sheets
-            EscribirEnGoogleSheets(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxAyudante.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
-
-
-
+            string registro = $"{id}, {numeroTurno}, {fechaYHora}, {textBoxNombre.Text}, {textBoxApellido.Text}, {textBoxLicencia.Text}, {textBoxProveedor.Text},{textBoxPlacas.Text}";
 
             // Agregar un título si el archivo no existe
             if (!File.Exists(registrosFilePath))
             {
-                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Piloto, Ayudante's, No. Licencia, Proveedor, Placas" + Environment.NewLine);
+                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Nombre, Apellido, No. Licencia, Proveedor, Placas" + Environment.NewLine);
             }
 
             // Escribir la línea en el archivo de registros
@@ -81,10 +72,10 @@ namespace Registro_Tickets_Garita
             GuardarUltimoID();
 
             // Imprimir el ticket
-            ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxAyudante.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
+            ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
 
             // Enviar un correo electrónico con los datos
-            EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxAyudante.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
+            EnviarCorreoElectronico(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
 
             // Mostrar un mensaje de éxito o hacer otras acciones necesarias
             MessageBox.Show("Registro completado.Turno: " + numeroTurno);
@@ -117,7 +108,7 @@ namespace Registro_Tickets_Garita
         {
             // Lógica para limpiar los campos de entrada después de registrar
             textBoxNombre.Clear();
-            textBoxAyudante.Clear();
+            textBoxApellido.Clear();
             textBoxLicencia.Clear();
             textBoxProveedor.Clear();
             textBoxPlacas.Clear();
@@ -131,8 +122,8 @@ namespace Registro_Tickets_Garita
             {
                 using (System.Drawing.Font titleFont = new System.Drawing.Font("Arial", 14, FontStyle.Bold))
                 using (System.Drawing.Font normalFont = new System.Drawing.Font("Arial", 12))
-                using (Pen linePen = new Pen(System.Drawing.Color.Black, 2)) // Pincel para la línea
-                using (SolidBrush textBrush = new SolidBrush(System.Drawing.Color.Black)) // Pincel para el texto
+                using (Pen linePen = new Pen(Color.Black, 2)) // Pincel para la línea
+                using (SolidBrush textBrush = new SolidBrush(Color.Black)) // Pincel para el texto
                 {
                     int x = 10; // Margen izquierdo
                     int y = 10; // Margen superior
@@ -178,13 +169,13 @@ namespace Registro_Tickets_Garita
                     e.Graphics.DrawString(valorFecha, normalFont, textBrush, x, y + titleFont.GetHeight());
                     y += 40;
 
-                    string tituloNombre = "Piloto:";
+                    string tituloNombre = "Nombre:";
                     string valorNombre = nombre;
                     e.Graphics.DrawString(tituloNombre, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(valorNombre, normalFont, textBrush, x, y + titleFont.GetHeight());
                     y += 40;
 
-                    string tituloApellido = "Ayudante's:";
+                    string tituloApellido = "Apellido:";
                     string valorApellido = apellido;
                     e.Graphics.DrawString(tituloApellido, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(valorApellido, normalFont, textBrush, x, y + titleFont.GetHeight());
@@ -249,83 +240,23 @@ namespace Registro_Tickets_Garita
 
         }
 
-        private void EscribirEnGoogleSheets(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
-        {
-
-            // Credenciales de Google Sheets
-            string credencialesJsonPath = "credentials.json"; // Reemplaza con la ruta a tu archivo JSON de credenciales
-            string tokenJsonPathSheets = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens", "sheets");
-
-            UserCredential credential;
-            using (var stream = new FileStream(credencialesJsonPath, FileMode.Open, FileAccess.Read))
-            {
-                // Incluye el alcance para lectura y escritura
-                string[] scopes = { SheetsService.Scope.Spreadsheets };
-
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
-                    scopes,
-                    "fernando.zuniga@foodservice.com.gt", // Cambia por tu dirección de correo
-                    CancellationToken.None,
-                    new FileDataStore(tokenJsonPathSheets)
-                ).Result;
-            }
-
-            // Inicializar el servicio de Google Sheets
-            var sheetsService = new SheetsService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Reg_Entrada"
-            });
-
-            // ID de tu hoja de cálculo de Google Sheets
-            string spreadsheetId = "1wqVsSCL0ccH3aGNVd1XWhVOFIUwDgfqLS-toJVWBZ4o";
-
-            // Nombre de la hoja en la que deseas escribir
-            string sheetName = "Registros";
-
-            // Rango para escribir en la última fila de la hoja
-            string range = $"{sheetName}!A:A";
-
-
-            // Crear los valores que deseas escribir en la hoja
-            var values = new List<IList<object>> {
-        new List<object> { id, turno, fechaYHora.ToString(), nombre, apellido, licencia, proveedor, placas }
-    };
-
-
-
-            // Crear el objeto de valores
-            var valueRange = new ValueRange { Values = values };
-
-
-            // Crear la solicitud para anexar en la hoja de cálculo
-            SpreadsheetsResource.ValuesResource.AppendRequest appendRequest =
-                sheetsService.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
-            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
-
-            // Ejecutar la solicitud
-            AppendValuesResponse appendResponse = appendRequest.Execute();
-        }
-
-
         private void EnviarCorreoElectronico(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
         {
-            
             UserCredential credential;
 
-            string credencialesJsonPath = "gmail_credentials.json"; // Reemplaza con la ruta a tu nuevo archivo JSON de credenciales de Gmail
+            string credencialesJsonPath = "credentials.json"; // Reemplaza con la ruta a tu archivo JSON de credenciales
 
             using (var stream = new FileStream(credencialesJsonPath, FileMode.Open, FileAccess.Read))
             {
                 string[] scopes = { GmailService.Scope.GmailSend };
 
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    GoogleClientSecrets.FromStream(stream).Secrets
+,
                     scopes,
-                    "fernando.zuniga@foodservice.com.gt",
+                    "fernando.zuniga@foodservice.com.gt", // Cambia "usuario@gmail.com" por tu dirección de correo
                     CancellationToken.None,
-                    new FileDataStore(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens", "gmail"))
+                    new FileDataStore(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens"))
                 ).Result;
             }
 
@@ -342,8 +273,8 @@ namespace Registro_Tickets_Garita
         $"Se ha registrado un nuevo turno con ID {id}. Comparto los detalles:  \n\n" +
         $"Turno: {turno}\n" +
         $"Fecha y Hora: {fechaYHora}\n" +
-        $"Piloto: {nombre}\n" +
-        $"Ayudante's: {apellido}\n" +
+        $"Nombre: {nombre}\n" +
+        $"Apellido: {apellido}\n" +
         $"No. Licencia: {licencia}\n" +
         $"Proveedor: {proveedor}\n" +
         $"Placas: {placas}\n\n" +
