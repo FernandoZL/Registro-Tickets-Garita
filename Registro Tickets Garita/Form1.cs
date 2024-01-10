@@ -1,7 +1,10 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -62,7 +65,7 @@ namespace Registro_Tickets_Garita
             // Agregar un título si el archivo no existe
             if (!File.Exists(registrosFilePath))
             {
-                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Nombre, Apellido, No. Licencia, Proveedor, Placas" + Environment.NewLine);
+                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Piloto, Ayudante's, No. Licencia, Proveedor, Placas" + Environment.NewLine);
             }
 
             // Escribir la línea en el archivo de registros
@@ -70,6 +73,10 @@ namespace Registro_Tickets_Garita
 
             // Guardar el último ID
             GuardarUltimoID();
+
+            // Escribir en Google Sheets
+            EscribirEnGoogleSheets(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
+
 
             // Imprimir el ticket
             ImprimirTicket(id, numeroTurno, fechaYHora, textBoxNombre.Text, textBoxApellido.Text, textBoxLicencia.Text, textBoxProveedor.Text, textBoxPlacas.Text);
@@ -85,6 +92,8 @@ namespace Registro_Tickets_Garita
 
             // Reiniciar los campos de entrada si es necesario
             LimpiarCampos();
+
+
 
         }
 
@@ -114,6 +123,62 @@ namespace Registro_Tickets_Garita
             textBoxPlacas.Clear();
         }
 
+
+        private void EscribirEnGoogleSheets(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
+        {
+            // Credenciales de Google Sheets
+            string credencialesJsonPath = "credentials.json"; // Reemplaza con la ruta a tu archivo JSON de credenciales
+            string tokenJsonPathSheets = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens", "sheets");
+
+            UserCredential credential;
+            using (var stream = new FileStream(credencialesJsonPath, FileMode.Open, FileAccess.Read))
+
+            {
+                // Incluye el alcance para lectura y escritura
+                string[] scopes = { SheetsService.Scope.Spreadsheets };
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    scopes,
+                    "fernando.zuniga@foodservice.com.gt", // Cambia por tu dirección de correo
+                    CancellationToken.None,
+                    new FileDataStore(tokenJsonPathSheets)
+                ).Result;
+            }
+            // Inicializar el servicio de Google Sheets
+            var sheetsService = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "NombreDeTuApp"
+            });
+
+            // ID de tu hoja de cálculo de Google Sheets
+            string spreadsheetId = "1wqVsSCL0ccH3aGNVd1XWhVOFIUwDgfqLS-toJVWBZ4o";
+
+            // Nombre de la hoja en la que deseas escribir
+            string sheetName = "Registros";
+
+            // Rango para escribir en la última fila de la hoja
+            string range = $"{sheetName}!A:A";
+
+            // Crear los valores que deseas escribir en la hoja
+            var values = new List<IList<object>> {
+        new List<object> { id, turno, fechaYHora.ToString(), nombre, apellido, licencia, proveedor, placas }
+    };
+
+            // Crear el objeto de valores
+            var valueRange = new ValueRange { Values = values };
+
+            // Crear la solicitud para anexar en la hoja de cálculo
+            SpreadsheetsResource.ValuesResource.AppendRequest appendRequest =
+                sheetsService.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+            appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+
+            // Ejecutar la solicitud
+            AppendValuesResponse appendResponse = appendRequest.Execute();
+
+        }
+
         private void ImprimirTicket(int id, int turno, DateTime fechaYHora, string nombre, string apellido, string licencia, string proveedor, string placas)
         {
             // Crear un documento para imprimir
@@ -122,23 +187,40 @@ namespace Registro_Tickets_Garita
             {
                 using (System.Drawing.Font titleFont = new System.Drawing.Font("Arial", 14, FontStyle.Bold))
                 using (System.Drawing.Font normalFont = new System.Drawing.Font("Arial", 12))
-                using (Pen linePen = new Pen(Color.Black, 2)) // Pincel para la línea
-                using (SolidBrush textBrush = new SolidBrush(Color.Black)) // Pincel para el texto
+                using (Pen linePen = new Pen(System.Drawing.Color.Black, 2))
+                using (SolidBrush textBrush = new SolidBrush(System.Drawing.Color.Black))
+
                 {
                     int x = 10; // Margen izquierdo
                     int y = 10; // Margen superior
 
-
-                    // Obtener la ruta de la imagen en la carpeta Debug
-                    string rutaImagen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SysAmall.jpg"); // Reemplaza con el nombre y extensión de tu imagen
-
-                    // Agregar la imagen centrada
+                    // Agregar la imagen a la izquierda
+                    string rutaImagen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SysAmall.jpg");
                     Image imagen = Image.FromFile(rutaImagen);
                     int imagenAncho = 172; // Ancho deseado de la imagen
                     int imagenAltura = 74; // Altura deseada de la imagen
-                    int centrarX = (e.PageBounds.Width - imagenAncho) / 2; // Calcular la posición X para centrar la imagen
-                    e.Graphics.DrawImage(imagen, centrarX, y, imagenAncho, imagenAltura); // Ajusta la posición y el tamaño de la imagen centrada
-                    y += imagenAltura + 20; // Ajusta el espacio después de la imagen
+                    e.Graphics.DrawImage(imagen, x, y, imagenAncho, imagenAltura); // Ajusta la posición y el tamaño de la imagen
+
+                    // Ajustar la posición x para el código QR
+                    int xQR = x + imagenAncho + 2;
+
+                    // Generar el código QR con la información necesaria
+                    QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                    QRCodeData qrCodeData = qrGenerator.CreateQrCode($"{id},{placas}, {fechaYHora}", QRCodeGenerator.ECCLevel.Q);
+                    QRCoder.QRCode qrCode = new QRCoder.QRCode(qrCodeData);
+
+                    // Obtener el Bitmap del código QR
+                    Bitmap qrCodeImage = qrCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, true);
+
+                    // Cambiar el tamaño de la imagen del código QR a 100x100
+                    qrCodeImage = new Bitmap(qrCodeImage, new System.Drawing.Size(100, 74));
+
+                    // Agregar el código QR a la par de la imagen
+                    e.Graphics.DrawImage(qrCodeImage, xQR, y);
+
+                    // Ajustar la posición y para la siguiente línea
+                    y += Math.Max(imagenAltura, qrCodeImage.Height) + 20; // Ajusta el espacio después de la imagen y el código QR
+
 
                     // Título "Descarga de proveedores!" centrado
                     string tituloBienvenido = "" +
@@ -169,13 +251,13 @@ namespace Registro_Tickets_Garita
                     e.Graphics.DrawString(valorFecha, normalFont, textBrush, x, y + titleFont.GetHeight());
                     y += 40;
 
-                    string tituloNombre = "Nombre:";
+                    string tituloNombre = "Piloto:";
                     string valorNombre = nombre;
                     e.Graphics.DrawString(tituloNombre, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(valorNombre, normalFont, textBrush, x, y + titleFont.GetHeight());
                     y += 40;
 
-                    string tituloApellido = "Apellido:";
+                    string tituloApellido = "Ayudante's:";
                     string valorApellido = apellido;
                     e.Graphics.DrawString(tituloApellido, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(valorApellido, normalFont, textBrush, x, y + titleFont.GetHeight());
@@ -244,19 +326,19 @@ namespace Registro_Tickets_Garita
         {
             UserCredential credential;
 
-            string credencialesJsonPath = "credentials.json"; // Reemplaza con la ruta a tu archivo JSON de credenciales
+            string credencialesJsonPath = "gmail_credentials.json"; // Reemplaza con la ruta a tu nuevo archivo JSON de credenciales de Gmail
+
 
             using (var stream = new FileStream(credencialesJsonPath, FileMode.Open, FileAccess.Read))
             {
                 string[] scopes = { GmailService.Scope.GmailSend };
 
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets
-,
+                    GoogleClientSecrets.FromStream(stream).Secrets,
                     scopes,
-                    "fernando.zuniga@foodservice.com.gt", // Cambia "usuario@gmail.com" por tu dirección de correo
+                    "fernando.zuniga@foodservice.com.gt",
                     CancellationToken.None,
-                    new FileDataStore(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens"))
+                    new FileDataStore(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tokens", "gmail"))
                 ).Result;
             }
 
@@ -273,8 +355,8 @@ namespace Registro_Tickets_Garita
         $"Se ha registrado un nuevo turno con ID {id}. Comparto los detalles:  \n\n" +
         $"Turno: {turno}\n" +
         $"Fecha y Hora: {fechaYHora}\n" +
-        $"Nombre: {nombre}\n" +
-        $"Apellido: {apellido}\n" +
+        $"Piloto: {nombre}\n" +
+        $"Ayudante's: {apellido}\n" +
         $"No. Licencia: {licencia}\n" +
         $"Proveedor: {proveedor}\n" +
         $"Placas: {placas}\n\n" +
