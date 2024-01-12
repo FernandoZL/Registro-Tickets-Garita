@@ -65,7 +65,7 @@ namespace Registro_Tickets_Garita
             // Agregar un título si el archivo no existe
             if (!File.Exists(registrosFilePath))
             {
-                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora, Piloto, Ayudante's, No. Licencia, Proveedor, Placas" + Environment.NewLine);
+                File.WriteAllText(registrosFilePath, "ID, Turno, Fecha y Hora Ingreso, Piloto, Ayudante's, No. Licencia, Proveedor, Placas" + Environment.NewLine);
             }
 
             // Escribir la línea en el archivo de registros
@@ -206,7 +206,7 @@ namespace Registro_Tickets_Garita
 
                     // Generar el código QR con la información necesaria
                     QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                    QRCodeData qrCodeData = qrGenerator.CreateQrCode($"{id},{placas}, {fechaYHora}", QRCodeGenerator.ECCLevel.Q);
+                    QRCodeData qrCodeData = qrGenerator.CreateQrCode($"{id},{placas},{turno},{nombre}", QRCodeGenerator.ECCLevel.Q);
                     QRCoder.QRCode qrCode = new QRCoder.QRCode(qrCodeData);
 
                     // Obtener el Bitmap del código QR
@@ -245,7 +245,7 @@ namespace Registro_Tickets_Garita
                     y += 20;
 
                     // Otros detalles (ajustados al ancho del papel)
-                    string tituloFecha = "Fecha y Hora:";
+                    string tituloFecha = "Fecha y Hora Ingreso:";
                     string valorFecha = fechaYHora.ToString();
                     e.Graphics.DrawString(tituloFecha, titleFont, textBrush, x, y);
                     e.Graphics.DrawString(valorFecha, normalFont, textBrush, x, y + titleFont.GetHeight());
@@ -354,7 +354,7 @@ namespace Registro_Tickets_Garita
                 Body = $"Hola Equipo de Supply gusto en saludarles,\n\n" +
         $"Se ha registrado un nuevo turno con ID {id}. Comparto los detalles:  \n\n" +
         $"Turno: {turno}\n" +
-        $"Fecha y Hora: {fechaYHora}\n" +
+        $"Fecha y Hora Ingreso: {fechaYHora}\n" +
         $"Piloto: {nombre}\n" +
         $"Ayudante's: {apellido}\n" +
         $"No. Licencia: {licencia}\n" +
